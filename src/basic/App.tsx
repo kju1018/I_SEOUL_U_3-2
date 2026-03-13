@@ -2,14 +2,21 @@ import { useState, useCallback, useEffect } from 'react';
 import { CartItem, Coupon, Product, ProductWithUI, Notification } from '../types';
 import { useProducts } from './hooks/useProducts';
 import { initialCoupons } from './constants';
-
-
-
+import { useNotification } from './hooks/useNotification';
 
 const App = () => {
 
-  const {products, setProducts} = useProducts();
-
+  const {notifications, setNotifications, addNotification} = useNotification();
+  const {
+    products, 
+    filteredProducts,
+    searchTerm,
+    setSearchTerm,
+    addProduct, 
+    updateProduct, 
+    deleteProduct
+  } = useProducts(addNotification);
+  
   const [cart, setCart] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');
     if (saved) {
@@ -36,12 +43,10 @@ const App = () => {
 
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [activeTab, setActiveTab] = useState<'products' | 'coupons'>('products');
   const [showProductForm, setShowProductForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   // Admin
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
@@ -136,15 +141,6 @@ const App = () => {
     return remaining;
   };
 
-  const addNotification = useCallback((message: string, type: 'error' | 'success' | 'warning' = 'success') => {
-    const id = Date.now().toString();
-    setNotifications(prev => [...prev, { id, message, type }]);
-    
-    setTimeout(() => {
-      setNotifications(prev => prev.filter(n => n.id !== id));
-    }, 3000);
-  }, []);
-
   const [totalItemCount, setTotalItemCount] = useState(0);
   
 
@@ -152,10 +148,6 @@ const App = () => {
     const count = cart.reduce((sum, item) => sum + item.quantity, 0);
     setTotalItemCount(count);
   }, [cart]);
-
-  useEffect(() => {
-    localStorage.setItem('products', JSON.stringify(products));
-  }, [products]);
 
   useEffect(() => {
     localStorage.setItem('coupons', JSON.stringify(coupons));
@@ -169,12 +161,7 @@ const App = () => {
     }
   }, [cart]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
+
 
   const addToCart = useCallback((product: ProductWithUI) => {
     const remainingStock = getRemainingStock(product);
@@ -254,31 +241,6 @@ const App = () => {
     setSelectedCoupon(null);
   }, [addNotification]);
 
-  const addProduct = useCallback((newProduct: Omit<ProductWithUI, 'id'>) => {
-    const product: ProductWithUI = {
-      ...newProduct,
-      id: `p${Date.now()}`
-    };
-    setProducts(prev => [...prev, product]);
-    addNotification('상품이 추가되었습니다.', 'success');
-  }, [addNotification]);
-
-  const updateProduct = useCallback((productId: string, updates: Partial<ProductWithUI>) => {
-    setProducts(prev =>
-      prev.map(product =>
-        product.id === productId
-          ? { ...product, ...updates }
-          : product
-      )
-    );
-    addNotification('상품이 수정되었습니다.', 'success');
-  }, [addNotification]);
-
-  const deleteProduct = useCallback((productId: string) => {
-    setProducts(prev => prev.filter(p => p.id !== productId));
-    addNotification('상품이 삭제되었습니다.', 'success');
-  }, [addNotification]);
-
   const addCoupon = useCallback((newCoupon: Coupon) => {
     const existingCoupon = coupons.find(c => c.code === newCoupon.code);
     if (existingCoupon) {
@@ -338,13 +300,6 @@ const App = () => {
   };
 
   const totals = calculateCartTotal();
-
-  const filteredProducts = debouncedSearchTerm
-    ? products.filter(product => 
-        product.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        (product.description && product.description.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
-      )
-    : products;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -836,7 +791,7 @@ const App = () => {
                 </div>
                 {filteredProducts.length === 0 ? (
                   <div className="text-center py-12">
-                    <p className="text-gray-500">"{debouncedSearchTerm}"에 대한 검색 결과가 없습니다.</p>
+                    <p className="text-gray-500">"{searchTerm}"에 대한 검색 결과가 없습니다.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
