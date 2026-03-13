@@ -18,6 +18,7 @@ export const useNotification = () => {
 
   return {
     notifications,
+    setNotifications,
     addNotification,
   };
 };
