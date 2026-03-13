@@ -1,39 +1,23 @@
 import { useState, useCallback, useEffect } from 'react';
-import { CartItem, Coupon, Product, ProductWithUI } from '../types';
+import { Coupon, ProductWithUI } from '../types';
 import { useProducts } from './hooks/useProducts';
-import { initialCoupons } from './constants';
 import { useNotification } from './hooks/useNotification';
 import { useCart } from './hooks/useCart';
-import { calculateCartTotal, calculateItemTotal, getMaxApplicableDiscount, getRemainingStock } from './models/carts';
+import { calculateCartTotal, calculateItemTotal, getRemainingStock } from './models/carts';
+import { useCoupon } from './hooks/useCoupon';
 
 const App = () => {
 
-  const {notifications, setNotifications, addNotification} = useNotification();
-  const {
-    products, 
-    filteredProducts,
-    searchTerm,
-    setSearchTerm,
-    addProduct, 
-    updateProduct, 
-    deleteProduct
-  } = useProducts(addNotification);
+  const { notifications, setNotifications, addNotification } = useNotification();
+  const { products, filteredProducts, searchTerm, setSearchTerm, addProduct, updateProduct, deleteProduct } =
+    useProducts(addNotification);
 
-  const {cart, setCart, addToCart, removeFromCart, updateQuantity, totalItemCount} = useCart(products, addNotification);
-  
-  const [coupons, setCoupons] = useState<Coupon[]>(() => {
-    const saved = localStorage.getItem('coupons');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return initialCoupons;
-      }
-    }
-    return initialCoupons;
-  });
+  const { cart, setCart, addToCart, removeFromCart, updateQuantity, totalItemCount } = useCart(
+    products,
+    addNotification,
+  );
+  const { coupons, setCoupons, selectedCoupon, setSelectedCoupon, applyCoupon } = useCoupon(addNotification);
 
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   
   const [showCouponForm, setShowCouponForm] = useState(false);
@@ -73,23 +57,6 @@ const App = () => {
     return `₩${price.toLocaleString()}`;
   };
 
-
-
-  useEffect(() => {
-    localStorage.setItem('coupons', JSON.stringify(coupons));
-  }, [coupons]);
-
-  const applyCoupon = useCallback((coupon: Coupon) => {
-    const currentTotal = calculateCartTotal(cart, selectedCoupon).totalAfterDiscount;
-    
-    if (currentTotal < 10000 && coupon.discountType === 'percentage') {
-      addNotification('percentage 쿠폰은 10,000원 이상 구매 시 사용 가능합니다.', 'error');
-      return;
-    }
-
-    setSelectedCoupon(coupon);
-    addNotification('쿠폰이 적용되었습니다.', 'success');
-  }, [addNotification, calculateCartTotal]);
 
   const completeOrder = useCallback(() => {
     const orderNumber = `ORD-${Date.now()}`;
@@ -808,7 +775,7 @@ const App = () => {
                           value={selectedCoupon?.code || ''}
                           onChange={(e) => {
                             const coupon = coupons.find(c => c.code === e.target.value);
-                            if (coupon) applyCoupon(coupon);
+                            if (coupon) applyCoupon(cart, coupon);
                             else setSelectedCoupon(null);
                           }}
                         >
