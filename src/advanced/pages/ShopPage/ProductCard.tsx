@@ -3,16 +3,16 @@ import { getRemainingStock } from "../../models/carts";
 import { formatPrice } from "../../utils/formatters";
 import { Button } from "../../components/ui/Button";
 import { useCartStore } from "../../store/useCartStore";
+import { useUIStore } from "../../store/useUIStore";
 
 interface ProductCardProps {
   product: ProductWithUI;
-  isAdmin: boolean;
 }
 
 export const ProductCard = ({
   product,
-  isAdmin,
 }: ProductCardProps) => {
+  const { isAdmin } = useUIStore();
   const { cart, addToCart } = useCartStore();
   const remainingStock = getRemainingStock(product, cart);
 

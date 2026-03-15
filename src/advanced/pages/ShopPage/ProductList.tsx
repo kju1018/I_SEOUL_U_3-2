@@ -2,11 +2,9 @@ import { ProductEmptyState } from "./ProductEmptyState";
 import { ProductCard } from "./ProductCard";
 import { useProductStore } from "../../store/useProductStore";
 
-interface ProductListProps {
-  isAdmin: boolean;
-}
+interface ProductListProps {}
 
-export const ProductList = ({ isAdmin }: ProductListProps) => {
+export const ProductList = ({}: ProductListProps) => {
   const { products, searchTerm } = useProductStore();
 
   const filteredProducts = searchTerm
@@ -31,7 +29,6 @@ export const ProductList = ({ isAdmin }: ProductListProps) => {
             <ProductCard
               key={product.id}
               product={product}
-              isAdmin={isAdmin}
             />
           ))}
         </div>

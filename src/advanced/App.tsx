@@ -32,7 +32,6 @@ const App = () => {
       ) : (
         <ShopPage
           completeOrder={completeOrder}
-          isAdmin={isAdmin}
         />
       )}
     </Layout>

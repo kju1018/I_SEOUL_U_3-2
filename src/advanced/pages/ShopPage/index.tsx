@@ -8,12 +8,10 @@ import { useCouponStore } from "../../store/useCouponStore";
 
 interface ShopPageProps {
   completeOrder: () => void;
-  isAdmin: boolean;
 }
 
 export const ShopPage = ({
   completeOrder,
-  isAdmin,
 }: ShopPageProps) => {
   const { cart } = useCartStore();
   const { selectedCoupon } = useCouponStore();
@@ -22,7 +20,7 @@ export const ShopPage = ({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div className="lg:col-span-3">
-        <ProductList isAdmin={isAdmin} />
+        <ProductList />
       </div>
 
       <div className="lg:col-span-1">
