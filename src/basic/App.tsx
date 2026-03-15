@@ -7,6 +7,7 @@ import { calculateCartTotal, calculateItemTotal, getRemainingStock } from "./mod
 import { useCoupon } from "./hooks/useCoupon";
 import { useProductForm } from "./hooks/useProductForm";
 import { useCouponForm } from "./hooks/useCouponForm";
+import { formatPrice } from "./utils/formatters";
 
 const App = () => {
   const { notifications, setNotifications, addNotification } = useNotification();
@@ -43,20 +44,7 @@ const App = () => {
     handleCouponSubmit,
   } = useCouponForm({ addCoupon });
 
-  const formatPrice = (price: number, productId?: string): string => {
-    if (productId) {
-      const product = products.find((p) => p.id === productId);
-      if (product && getRemainingStock(product, cart) <= 0) {
-        return "SOLD OUT";
-      }
-    }
 
-    if (isAdmin) {
-      return `${price.toLocaleString()}원`;
-    }
-
-    return `₩${price.toLocaleString()}`;
-  };
 
   const completeOrder = useCallback(() => {
     const orderNumber = `ORD-${Date.now()}`;
@@ -218,7 +206,7 @@ const App = () => {
                             {product.name}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {formatPrice(product.price, product.id)}
+                            {getRemainingStock(product, cart) <= 0 ? "SOLD OUT" : formatPrice(product.price, isAdmin)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <span
@@ -642,7 +630,7 @@ const App = () => {
                             {/* 가격 정보 */}
                             <div className="mb-3">
                               <p className="text-lg font-bold text-gray-900">
-                                {formatPrice(product.price, product.id)}
+                                {getRemainingStock(product, cart) <= 0 ? "SOLD OUT" : formatPrice(product.price, isAdmin)}
                               </p>
                               {product.discounts.length > 0 && (
                                 <p className="text-xs text-gray-500">
