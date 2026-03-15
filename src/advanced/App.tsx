@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 
-import { useProducts } from "./hooks/useProducts";
 import { useCart } from "./hooks/useCart";
 import { calculateCartTotal } from "./models/carts";
 import { useCoupon } from "./hooks/useCoupon";
@@ -11,11 +10,11 @@ import { ShopPage } from "./pages/ShopPage";
 import { Notification } from "./components/ui/Notification";
 import { Layout } from "./components/layout/Layout";
 import { useUIStore } from "./store/useUIStore";
+import { useProductStore } from "./store/useProductStore";
 
 const App = () => {
   const { notifications, isAdmin, addNotification, removeNotification } = useUIStore();
-  const { products, filteredProducts, searchTerm, setSearchTerm, addProduct, updateProduct, deleteProduct } =
-    useProducts(addNotification);
+  const { products } = useProductStore();
 
   const { cart, setCart, addToCart, removeFromCart, updateQuantity, totalItemCount } = useCart(
     products,
@@ -38,8 +37,6 @@ const App = () => {
       notification={<Notification notifications={notifications} onClose={removeNotification} />}
       header={
         <Header
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
           totalItemCount={totalItemCount}
           hasCartItems={cart.length > 0}
         />
@@ -47,20 +44,13 @@ const App = () => {
     >
       {isAdmin ? (
         <AdminPage
-          products={products}
           coupons={coupons}
-          addProduct={addProduct}
-          updateProduct={updateProduct}
-          deleteProduct={deleteProduct}
           addCoupon={addCoupon}
           deleteCoupon={deleteCoupon}
           addNotification={addNotification}
         />
       ) : (
         <ShopPage
-          products={products}
-          filteredProducts={filteredProducts}
-          searchTerm={searchTerm}
           cart={cart}
           addToCart={addToCart}
           removeFromCart={removeFromCart}

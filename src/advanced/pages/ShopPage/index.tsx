@@ -1,15 +1,12 @@
-import { ProductWithUI, CartItem, Coupon } from "../../../types";
+import { CartItem, Coupon } from "../../../types";
 import { ProductList } from "./ProductList";
 import { CartList } from "./CartList";
 import { CartDiscount } from "./CartDiscount";
 import { OrderSummary } from "./OrderSummary";
 
 interface ShopPageProps {
-  products: ProductWithUI[];
-  filteredProducts: ProductWithUI[];
-  searchTerm: string;
   cart: CartItem[];
-  addToCart: (product: ProductWithUI) => void;
+  addToCart: (product: any) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, newQuantity: number) => void;
   coupons: Coupon[];
@@ -25,9 +22,6 @@ interface ShopPageProps {
 }
 
 export const ShopPage = ({
-  products,
-  filteredProducts,
-  searchTerm,
   cart,
   addToCart,
   removeFromCart,
@@ -43,14 +37,7 @@ export const ShopPage = ({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div className="lg:col-span-3">
-        <ProductList
-          products={products}
-          filteredProducts={filteredProducts}
-          searchTerm={searchTerm}
-          cart={cart}
-          addToCart={addToCart}
-          isAdmin={isAdmin}
-        />
+        <ProductList cart={cart} addToCart={addToCart} isAdmin={isAdmin} />
       </div>
 
       <div className="lg:col-span-1">

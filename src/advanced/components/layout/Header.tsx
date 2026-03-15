@@ -1,15 +1,15 @@
 import { Button } from "../ui/Button";
 import { useUIStore } from "../../store/useUIStore";
+import { useProductStore } from "../../store/useProductStore";
 
 interface HeaderProps {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
   totalItemCount: number;
   hasCartItems: boolean;
 }
 
-export const Header = ({ searchTerm, setSearchTerm, totalItemCount, hasCartItems }: HeaderProps) => {
+export const Header = ({ totalItemCount, hasCartItems }: HeaderProps) => {
   const { isAdmin, setIsAdmin } = useUIStore();
+  const { searchTerm, setSearchTerm } = useProductStore();
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40 border-b">
       <div className="max-w-7xl mx-auto px-4">

@@ -3,9 +3,22 @@ import { render, screen, fireEvent, within, waitFor } from '@testing-library/rea
 import { vi } from 'vitest';
 import App from '../App';
 import '../../setupTests';
+import { useUIStore } from '../store/useUIStore';
+import { useProductStore } from '../store/useProductStore';
+import { initialProducts } from '../constants';
 
 describe('쇼핑몰 앱 통합 테스트', () => {
   beforeEach(() => {
+    // Zustand 스토어 초기화
+    useUIStore.setState({ 
+      notifications: [], 
+      isAdmin: false 
+    });
+    useProductStore.setState({ 
+      products: initialProducts, 
+      searchTerm: "" 
+    });
+
     // localStorage 초기화
     localStorage.clear();
     // console 경고 무시

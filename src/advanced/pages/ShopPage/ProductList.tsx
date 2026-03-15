@@ -1,24 +1,24 @@
 import { ProductWithUI, CartItem } from "../../../types";
 import { ProductEmptyState } from "./ProductEmptyState";
 import { ProductCard } from "./ProductCard";
+import { useProductStore } from "../../store/useProductStore";
 
 interface ProductListProps {
-  products: ProductWithUI[];
-  filteredProducts: ProductWithUI[];
-  searchTerm: string;
   cart: CartItem[];
   addToCart: (product: ProductWithUI) => void;
   isAdmin: boolean;
 }
 
-export const ProductList = ({
-  products,
-  filteredProducts,
-  searchTerm,
-  cart,
-  addToCart,
-  isAdmin,
-}: ProductListProps) => {
+export const ProductList = ({ cart, addToCart, isAdmin }: ProductListProps) => {
+  const { products, searchTerm } = useProductStore();
+
+  const filteredProducts = searchTerm
+    ? products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase())),
+      )
+    : products;
   return (
     <section>
       <div className="mb-6 flex justify-between items-center">

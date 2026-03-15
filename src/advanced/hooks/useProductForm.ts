@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import { Product, ProductWithUI } from '../../types';
+import { ProductWithUI } from '../../types';
+import { useProductStore } from '../store/useProductStore';
 
-interface UseProductFormProps {
-  addProduct: (product: Omit<Product, 'id'>) => void;
-  updateProduct: (id: string, product: Omit<Product, 'id'>) => void;
-}
-
-export const useProductForm = ({ addProduct, updateProduct }: UseProductFormProps) => {
+export const useProductForm = () => {
+  const { addProduct, updateProduct } = useProductStore();
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [productForm, setProductForm] = useState({

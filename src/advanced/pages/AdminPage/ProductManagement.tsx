@@ -3,22 +3,14 @@ import { useProductForm } from '../../hooks/useProductForm';
 import { ProductForm } from './ProductForm';
 import { ProductTable } from './ProductTable';
 import { Button } from '../../components/ui/Button';
+import { useProductStore } from '../../store/useProductStore';
+import { useUIStore } from '../../store/useUIStore';
 
-interface ProductManagementProps {
-  products: ProductWithUI[];
-  addProduct: (product: Omit<Product, "id">) => void;
-  updateProduct: (id: string, product: Omit<Product, "id">) => void;
-  deleteProduct: (id: string) => void;
-  addNotification: (message: string, type: "success" | "error" | "warning") => void;
-}
+interface ProductManagementProps {}
 
-export const ProductManagement = ({
-  products,
-  addProduct,
-  updateProduct,
-  deleteProduct,
-  addNotification,
-}: ProductManagementProps) => {
+export const ProductManagement = ({}: ProductManagementProps) => {
+  const { products, deleteProduct } = useProductStore();
+  const { addNotification } = useUIStore();
   const {
     showProductForm,
     setShowProductForm,
@@ -28,7 +20,7 @@ export const ProductManagement = ({
     setProductForm,
     handleProductSubmit,
     startEditProduct,
-  } = useProductForm({ addProduct, updateProduct });
+  } = useProductForm();
 
   return (
     <section className="bg-white rounded-lg border border-gray-200">
