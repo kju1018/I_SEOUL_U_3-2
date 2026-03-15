@@ -1,17 +1,10 @@
-import { CartItem as CartItemType } from "../../../types";
 import { CartItem } from "./CartItem";
+import { useCartStore } from "../../store/useCartStore";
 
-interface CartListProps {
-  cart: CartItemType[];
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, newQuantity: number) => void;
-}
+interface CartListProps {}
 
-export const CartList = ({
-  cart,
-  removeFromCart,
-  updateQuantity,
-}: CartListProps) => {
+export const CartList = ({}: CartListProps) => {
+  const { cart, removeFromCart, updateQuantity } = useCartStore();
   return (
     <section className="bg-white rounded-lg border border-gray-200 p-4">
       <h2 className="text-lg font-semibold mb-4 flex items-center">

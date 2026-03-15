@@ -5,6 +5,7 @@ import App from '../App';
 import '../../setupTests';
 import { useUIStore } from '../store/useUIStore';
 import { useProductStore } from '../store/useProductStore';
+import { useCartStore } from '../store/useCartStore';
 import { initialProducts } from '../constants';
 
 describe('쇼핑몰 앱 통합 테스트', () => {
@@ -17,6 +18,10 @@ describe('쇼핑몰 앱 통합 테스트', () => {
     useProductStore.setState({ 
       products: initialProducts, 
       searchTerm: "" 
+    });
+    useCartStore.setState({
+      cart: [],
+      totalItemCount: 0
     });
 
     // localStorage 초기화

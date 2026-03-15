@@ -1,15 +1,12 @@
-import { ProductWithUI, CartItem } from "../../../types";
 import { ProductEmptyState } from "./ProductEmptyState";
 import { ProductCard } from "./ProductCard";
 import { useProductStore } from "../../store/useProductStore";
 
 interface ProductListProps {
-  cart: CartItem[];
-  addToCart: (product: ProductWithUI) => void;
   isAdmin: boolean;
 }
 
-export const ProductList = ({ cart, addToCart, isAdmin }: ProductListProps) => {
+export const ProductList = ({ isAdmin }: ProductListProps) => {
   const { products, searchTerm } = useProductStore();
 
   const filteredProducts = searchTerm
@@ -34,8 +31,6 @@ export const ProductList = ({ cart, addToCart, isAdmin }: ProductListProps) => {
             <ProductCard
               key={product.id}
               product={product}
-              cart={cart}
-              addToCart={addToCart}
               isAdmin={isAdmin}
             />
           ))}

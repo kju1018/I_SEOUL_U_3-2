@@ -1,14 +1,12 @@
-import { CartItem, Coupon } from "../../../types";
+import { Coupon, CartItem } from "../../../types";
 import { ProductList } from "./ProductList";
 import { CartList } from "./CartList";
 import { CartDiscount } from "./CartDiscount";
 import { OrderSummary } from "./OrderSummary";
+import { useCartStore } from "../../store/useCartStore";
+import { useProductStore } from "../../store/useProductStore";
 
 interface ShopPageProps {
-  cart: CartItem[];
-  addToCart: (product: any) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, newQuantity: number) => void;
   coupons: Coupon[];
   selectedCoupon: Coupon | null;
   setSelectedCoupon: (coupon: Coupon | null) => void;
@@ -22,10 +20,6 @@ interface ShopPageProps {
 }
 
 export const ShopPage = ({
-  cart,
-  addToCart,
-  removeFromCart,
-  updateQuantity,
   coupons,
   selectedCoupon,
   setSelectedCoupon,
@@ -34,15 +28,17 @@ export const ShopPage = ({
   completeOrder,
   isAdmin,
 }: ShopPageProps) => {
+  const { cart } = useCartStore();
+  const { products } = useProductStore();
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div className="lg:col-span-3">
-        <ProductList cart={cart} addToCart={addToCart} isAdmin={isAdmin} />
+        <ProductList isAdmin={isAdmin} />
       </div>
 
       <div className="lg:col-span-1">
         <div className="sticky top-24 space-y-4">
-          <CartList cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />
+          <CartList />
 
           {cart.length > 0 && (
             <>

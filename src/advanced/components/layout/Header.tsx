@@ -1,15 +1,15 @@
 import { Button } from "../ui/Button";
 import { useUIStore } from "../../store/useUIStore";
 import { useProductStore } from "../../store/useProductStore";
+import { useCartStore } from "../../store/useCartStore";
 
-interface HeaderProps {
-  totalItemCount: number;
-  hasCartItems: boolean;
-}
+interface HeaderProps {}
 
-export const Header = ({ totalItemCount, hasCartItems }: HeaderProps) => {
+export const Header = ({}: HeaderProps) => {
   const { isAdmin, setIsAdmin } = useUIStore();
   const { searchTerm, setSearchTerm } = useProductStore();
+  const { totalItemCount, cart } = useCartStore();
+  const hasCartItems = cart.length > 0;
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40 border-b">
       <div className="max-w-7xl mx-auto px-4">

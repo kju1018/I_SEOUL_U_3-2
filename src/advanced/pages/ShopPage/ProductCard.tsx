@@ -1,21 +1,19 @@
-import { ProductWithUI, CartItem, Discount } from "../../../types";
+import { ProductWithUI, Discount } from "../../../types";
 import { getRemainingStock } from "../../models/carts";
 import { formatPrice } from "../../utils/formatters";
 import { Button } from "../../components/ui/Button";
+import { useCartStore } from "../../store/useCartStore";
 
 interface ProductCardProps {
   product: ProductWithUI;
-  cart: CartItem[];
-  addToCart: (product: ProductWithUI) => void;
   isAdmin: boolean;
 }
 
 export const ProductCard = ({
   product,
-  cart,
-  addToCart,
   isAdmin,
 }: ProductCardProps) => {
+  const { cart, addToCart } = useCartStore();
   const remainingStock = getRemainingStock(product, cart);
 
   return (
