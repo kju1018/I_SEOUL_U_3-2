@@ -6,6 +6,7 @@ import { useCart } from "./hooks/useCart";
 import { calculateCartTotal, calculateItemTotal, getRemainingStock } from "./models/carts";
 import { useCoupon } from "./hooks/useCoupon";
 import { useProductForm } from "./hooks/useProductForm";
+import { useCouponForm } from "./hooks/useCouponForm";
 
 const App = () => {
   const { notifications, setNotifications, addNotification } = useNotification();
@@ -21,7 +22,6 @@ const App = () => {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [showCouponForm, setShowCouponForm] = useState(false);
   const [activeTab, setActiveTab] = useState<"products" | "coupons">("products");
 
   const {
@@ -35,12 +35,13 @@ const App = () => {
     startEditProduct,
   } = useProductForm({ addProduct, updateProduct });
 
-  const [couponForm, setCouponForm] = useState({
-    name: "",
-    code: "",
-    discountType: "amount" as "amount" | "percentage",
-    discountValue: 0,
-  });
+  const {
+    showCouponForm,
+    setShowCouponForm,
+    couponForm,
+    setCouponForm,
+    handleCouponSubmit,
+  } = useCouponForm({ addCoupon });
 
   const formatPrice = (price: number, productId?: string): string => {
     if (productId) {
@@ -63,18 +64,6 @@ const App = () => {
     setCart([]);
     setSelectedCoupon(null);
   }, [addNotification]);
-
-  const handleCouponSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addCoupon(couponForm);
-    setCouponForm({
-      name: "",
-      code: "",
-      discountType: "amount",
-      discountValue: 0,
-    });
-    setShowCouponForm(false);
-  };
 
   const totals = calculateCartTotal(cart, selectedCoupon);
 
