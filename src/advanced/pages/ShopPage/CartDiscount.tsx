@@ -1,18 +1,12 @@
 import { Coupon } from "../../../types";
+import { useCartStore } from "../../store/useCartStore";
+import { useCouponStore } from "../../store/useCouponStore";
 
-interface CartDiscountProps {
-  coupons: Coupon[];
-  selectedCoupon: Coupon | null;
-  onApplyCoupon: (coupon: Coupon) => void;
-  onSelectCoupon: (coupon: Coupon | null) => void;
-}
+interface CartDiscountProps {}
 
-export const CartDiscount = ({
-  coupons,
-  selectedCoupon,
-  onApplyCoupon,
-  onSelectCoupon,
-}: CartDiscountProps) => {
+export const CartDiscount = ({}: CartDiscountProps) => {
+  const { cart } = useCartStore();
+  const { coupons, selectedCoupon, setSelectedCoupon, applyCoupon } = useCouponStore();
   return (
     <section className="bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex items-center justify-between mb-3">
@@ -26,9 +20,9 @@ export const CartDiscount = ({
           onChange={(e) => {
             const coupon = coupons.find((c) => c.code === e.target.value);
             if (coupon) {
-              onApplyCoupon(coupon);
+              applyCoupon(cart, coupon);
             } else {
-              onSelectCoupon(null);
+              setSelectedCoupon(null);
             }
           }}
         >

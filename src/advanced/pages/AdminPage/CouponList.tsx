@@ -1,19 +1,18 @@
-import { Coupon } from '../../../types';
 import { CouponCard } from './CouponCard';
 
-interface CouponListProps {
-  coupons: Coupon[];
-  onDelete: (id: string) => void;
-}
+import { useCouponStore } from '../../store/useCouponStore';
 
-export const CouponList = ({ coupons, onDelete }: CouponListProps) => {
+interface CouponListProps {}
+
+export const CouponList = ({}: CouponListProps) => {
+  const { coupons, deleteCoupon } = useCouponStore();
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {coupons.map((coupon) => (
         <CouponCard
           key={coupon.code}
           coupon={coupon}
-          onDelete={onDelete}
+          onDelete={deleteCoupon}
         />
       ))}
     </div>

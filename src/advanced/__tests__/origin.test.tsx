@@ -6,7 +6,8 @@ import '../../setupTests';
 import { useUIStore } from '../store/useUIStore';
 import { useProductStore } from '../store/useProductStore';
 import { useCartStore } from '../store/useCartStore';
-import { initialProducts } from '../constants';
+import { useCouponStore } from '../store/useCouponStore';
+import { initialProducts, initialCoupons } from '../constants';
 
 describe('쇼핑몰 앱 통합 테스트', () => {
   beforeEach(() => {
@@ -22,6 +23,10 @@ describe('쇼핑몰 앱 통합 테스트', () => {
     useCartStore.setState({
       cart: [],
       totalItemCount: 0
+    });
+    useCouponStore.setState({
+      coupons: initialCoupons,
+      selectedCoupon: null
     });
 
     // localStorage 초기화

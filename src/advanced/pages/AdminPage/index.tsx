@@ -1,23 +1,10 @@
 import { useState } from "react";
-import { Coupon } from "../../../types";
 import { CouponManagement } from "./CouponManagement";
 import { ProductManagement } from "./ProductManagement";
 
-import { useProductStore } from "../../store/useProductStore";
+interface AdminPageProps {}
 
-interface AdminPageProps {
-  coupons: Coupon[];
-  addCoupon: (coupon: Coupon) => void;
-  deleteCoupon: (id: string) => void;
-  addNotification: (message: string, type: 'success' | 'error' | 'warning') => void;
-}
-
-export const AdminPage = ({
-  coupons,
-  addCoupon,
-  deleteCoupon,
-  addNotification
-}: AdminPageProps) => {
+export const AdminPage = ({}: AdminPageProps) => {
   const [activeTab, setActiveTab] = useState<"products" | "coupons">("products");
 
   return (
@@ -54,12 +41,7 @@ export const AdminPage = ({
       {activeTab === "products" ? (
         <ProductManagement />
       ) : (
-        <CouponManagement
-          coupons={coupons}
-          addCoupon={addCoupon}
-          deleteCoupon={deleteCoupon}
-          addNotification={addNotification}
-        />
+        <CouponManagement />
       )}
     </div>
   );

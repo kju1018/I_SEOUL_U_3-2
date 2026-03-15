@@ -1,26 +1,13 @@
-import { Coupon } from '../../../types';
 import { useCouponForm } from '../../hooks/useCouponForm';
 import { Button } from '../../components/ui/Button';
 
 import { CouponForm } from './CouponForm';
 import { CouponList } from './CouponList';
 
-interface CouponManagementProps {
-  coupons: Coupon[];
-  addCoupon: (coupon: Coupon) => void;
-  deleteCoupon: (id: string) => void;
-  addNotification: (message: string, type: 'success' | 'error' | 'warning') => void;
-}
+interface CouponManagementProps {}
 
-export const CouponManagement = ({
-  coupons,
-  addCoupon,
-  deleteCoupon,
-  addNotification
-}: CouponManagementProps) => {
-  const { showCouponForm, setShowCouponForm, couponForm, setCouponForm, handleCouponSubmit } = useCouponForm({
-    addCoupon,
-  });
+export const CouponManagement = ({}: CouponManagementProps) => {
+  const { showCouponForm, setShowCouponForm, couponForm, setCouponForm, handleCouponSubmit } = useCouponForm();
 
   return (
     <section className="bg-white rounded-lg border border-gray-200">
@@ -29,10 +16,7 @@ export const CouponManagement = ({
       </div>
       <div className="p-6">
         <div className="space-y-6">
-          <CouponList
-            coupons={coupons}
-            onDelete={deleteCoupon}
-          />
+          <CouponList />
 
           <div className="flex justify-center">
             <Button
@@ -54,7 +38,6 @@ export const CouponManagement = ({
             setCouponForm={setCouponForm}
             onSubmit={handleCouponSubmit}
             onCancel={() => setShowCouponForm(false)}
-            addNotification={addNotification}
           />
         )}
       </div>

@@ -1,4 +1,3 @@
-import { Product, ProductWithUI } from '../../../types';
 import { useProductForm } from '../../hooks/useProductForm';
 import { ProductForm } from './ProductForm';
 import { ProductTable } from './ProductTable';

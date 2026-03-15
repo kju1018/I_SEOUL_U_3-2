@@ -2,12 +2,13 @@ import React from 'react';
 import { Coupon } from '../../../types';
 import { Button } from '../../components/ui/Button';
 
+import { useUIStore } from '../../store/useUIStore';
+
 interface CouponFormProps {
   couponForm: Coupon;
   setCouponForm: (form: Coupon) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
-  addNotification: (message: string, type: 'success' | 'error' | 'warning') => void;
 }
 
 export const CouponForm = ({
@@ -15,8 +16,8 @@ export const CouponForm = ({
   setCouponForm,
   onSubmit,
   onCancel,
-  addNotification,
 }: CouponFormProps) => {
+  const { addNotification } = useUIStore();
   return (
     <div className="mt-6 p-4 bg-gray-50 rounded-lg">
       <form onSubmit={onSubmit} className="space-y-4">

@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { Coupon } from '../../types';
+import { useCouponStore } from '../store/useCouponStore';
 
-interface UseCouponFormProps {
-  addCoupon: (coupon: Coupon) => void;
-}
-
-export const useCouponForm = ({ addCoupon }: UseCouponFormProps) => {
+export const useCouponForm = () => {
+  const { addCoupon } = useCouponStore();
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [couponForm, setCouponForm] = useState({
     name: '',
