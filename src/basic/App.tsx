@@ -10,6 +10,7 @@ import { Header } from "./components/layout/Header";
 import { AdminPage } from "./pages/AdminPage";
 import { ShopPage } from "./pages/ShopPage";
 import { Notification } from "./components/ui/Notification";
+import { Layout } from "./components/layout/Layout";
 
 const App = () => {
   const { notifications, setNotifications, addNotification } = useNotification();
@@ -40,53 +41,54 @@ const App = () => {
   }, [setNotifications]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Notification
-        notifications={notifications}
-        onClose={handleCloseNotification}
-      />
-      
-      <Header
-        isAdmin={isAdmin}
-        setIsAdmin={setIsAdmin}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        totalItemCount={totalItemCount}
-        hasCartItems={cart.length > 0}
-      />
-
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {isAdmin ? (
-          <AdminPage
-            products={products}
-            coupons={coupons}
-            addProduct={addProduct}
-            updateProduct={updateProduct}
-            deleteProduct={deleteProduct}
-            addCoupon={addCoupon}
-            deleteCoupon={deleteCoupon}
-            addNotification={addNotification}
-          />
-        ) : (
-          <ShopPage
-            products={products}
-            filteredProducts={filteredProducts}
-            searchTerm={searchTerm}
-            cart={cart}
-            addToCart={addToCart}
-            removeFromCart={removeFromCart}
-            updateQuantity={updateQuantity}
-            coupons={coupons}
-            selectedCoupon={selectedCoupon}
-            setSelectedCoupon={setSelectedCoupon}
-            applyCoupon={applyCoupon}
-            totals={totals}
-            completeOrder={completeOrder}
-            isAdmin={isAdmin}
-          />
-        )}
-      </main>
-    </div>
+    <Layout
+      notification={
+        <Notification
+          notifications={notifications}
+          onClose={handleCloseNotification}
+        />
+      }
+      header={
+        <Header
+          isAdmin={isAdmin}
+          setIsAdmin={setIsAdmin}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          totalItemCount={totalItemCount}
+          hasCartItems={cart.length > 0}
+        />
+      }
+    >
+      {isAdmin ? (
+        <AdminPage
+          products={products}
+          coupons={coupons}
+          addProduct={addProduct}
+          updateProduct={updateProduct}
+          deleteProduct={deleteProduct}
+          addCoupon={addCoupon}
+          deleteCoupon={deleteCoupon}
+          addNotification={addNotification}
+        />
+      ) : (
+        <ShopPage
+          products={products}
+          filteredProducts={filteredProducts}
+          searchTerm={searchTerm}
+          cart={cart}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+          updateQuantity={updateQuantity}
+          coupons={coupons}
+          selectedCoupon={selectedCoupon}
+          setSelectedCoupon={setSelectedCoupon}
+          applyCoupon={applyCoupon}
+          totals={totals}
+          completeOrder={completeOrder}
+          isAdmin={isAdmin}
+        />
+      )}
+    </Layout>
   );
 };
 
