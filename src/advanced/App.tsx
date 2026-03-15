@@ -1,7 +1,6 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
 import { useProducts } from "./hooks/useProducts";
-import { useNotification } from "./hooks/useNotification";
 import { useCart } from "./hooks/useCart";
 import { calculateCartTotal } from "./models/carts";
 import { useCoupon } from "./hooks/useCoupon";
@@ -11,9 +10,10 @@ import { AdminPage } from "./pages/AdminPage";
 import { ShopPage } from "./pages/ShopPage";
 import { Notification } from "./components/ui/Notification";
 import { Layout } from "./components/layout/Layout";
+import { useUIStore } from "./store/useUIStore";
 
 const App = () => {
-  const { notifications, setNotifications, addNotification } = useNotification();
+  const { notifications, isAdmin, addNotification, removeNotification } = useUIStore();
   const { products, filteredProducts, searchTerm, setSearchTerm, addProduct, updateProduct, deleteProduct } =
     useProducts(addNotification);
 
@@ -24,34 +24,20 @@ const App = () => {
   const { coupons, selectedCoupon, setSelectedCoupon, applyCoupon, addCoupon, deleteCoupon } =
     useCoupon(addNotification);
 
-  const [isAdmin, setIsAdmin] = useState(false);
-
-
   const completeOrder = useCallback(() => {
     const orderNumber = `ORD-${Date.now()}`;
     addNotification(`주문이 완료되었습니다. 주문번호: ${orderNumber}`, "success");
     setCart([]);
     setSelectedCoupon(null);
-  }, [addNotification]);
+  }, [addNotification, setCart, setSelectedCoupon]);
 
   const totals = calculateCartTotal(cart, selectedCoupon);
 
-  const handleCloseNotification = useCallback((id: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-  }, [setNotifications]);
-
   return (
     <Layout
-      notification={
-        <Notification
-          notifications={notifications}
-          onClose={handleCloseNotification}
-        />
-      }
+      notification={<Notification notifications={notifications} onClose={removeNotification} />}
       header={
         <Header
-          isAdmin={isAdmin}
-          setIsAdmin={setIsAdmin}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           totalItemCount={totalItemCount}

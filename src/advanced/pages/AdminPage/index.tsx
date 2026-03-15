@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Product, Coupon, ProductWithUI } from '../../../types';
-import { CouponManagement } from './CouponManagement';
-import { ProductManagement } from './ProductManagement';
+import { useState } from "react";
+import { Product, Coupon, ProductWithUI } from "../../../types";
+import { CouponManagement } from "./CouponManagement";
+import { ProductManagement } from "./ProductManagement";
 
 interface AdminPageProps {
   products: ProductWithUI[];
   coupons: Coupon[];
-  addProduct: (product: Omit<Product, 'id'>) => void;
-  updateProduct: (id: string, product: Omit<Product, 'id'>) => void;
+  addProduct: (product: Omit<Product, "id">) => void;
+  updateProduct: (id: string, product: Omit<Product, "id">) => void;
   deleteProduct: (id: string) => void;
   addCoupon: (coupon: Coupon) => void;
   deleteCoupon: (id: string) => void;
-  addNotification: (message: string, type: 'success' | 'error' | 'warning') => void;
+  addNotification: (message: string, type: "success" | "error" | "warning") => void;
 }
 
 export const AdminPage = ({
@@ -22,13 +22,9 @@ export const AdminPage = ({
   deleteProduct,
   addCoupon,
   deleteCoupon,
-  addNotification
+  addNotification,
 }: AdminPageProps) => {
   const [activeTab, setActiveTab] = useState<"products" | "coupons">("products");
-
-
-
-
 
   return (
     <div className="max-w-6xl mx-auto">

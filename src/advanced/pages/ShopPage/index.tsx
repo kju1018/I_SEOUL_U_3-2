@@ -55,11 +55,7 @@ export const ShopPage = ({
 
       <div className="lg:col-span-1">
         <div className="sticky top-24 space-y-4">
-          <CartList
-            cart={cart}
-            removeFromCart={removeFromCart}
-            updateQuantity={updateQuantity}
-          />
+          <CartList cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />
 
           {cart.length > 0 && (
             <>
@@ -69,10 +65,7 @@ export const ShopPage = ({
                 onApplyCoupon={(coupon) => applyCoupon(cart, coupon)}
                 onSelectCoupon={setSelectedCoupon}
               />
-              <OrderSummary
-                totals={totals}
-                onCompleteOrder={completeOrder}
-              />
+              <OrderSummary totals={totals} onCompleteOrder={completeOrder} />
             </>
           )}
         </div>

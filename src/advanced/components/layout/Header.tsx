@@ -1,24 +1,15 @@
-
-
 import { Button } from "../ui/Button";
+import { useUIStore } from "../../store/useUIStore";
 
 interface HeaderProps {
-  isAdmin: boolean;
-  setIsAdmin: (isAdmin: boolean) => void;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   totalItemCount: number;
   hasCartItems: boolean;
 }
 
-export const Header = ({
-  isAdmin,
-  setIsAdmin,
-  searchTerm,
-  setSearchTerm,
-  totalItemCount,
-  hasCartItems
-}: HeaderProps) => {
+export const Header = ({ searchTerm, setSearchTerm, totalItemCount, hasCartItems }: HeaderProps) => {
+  const { isAdmin, setIsAdmin } = useUIStore();
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40 border-b">
       <div className="max-w-7xl mx-auto px-4">
@@ -38,11 +29,7 @@ export const Header = ({
             )}
           </div>
           <nav className="flex items-center space-x-4">
-            <Button
-              variant={isAdmin ? "primary" : "ghost"}
-              size="sm"
-              onClick={() => setIsAdmin(!isAdmin)}
-            >
+            <Button variant={isAdmin ? "primary" : "ghost"} size="sm" onClick={() => setIsAdmin(!isAdmin)}>
               {isAdmin ? "쇼핑몰로 돌아가기" : "관리자 페이지로"}
             </Button>
             {!isAdmin && (
