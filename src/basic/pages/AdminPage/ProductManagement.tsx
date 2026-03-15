@@ -2,6 +2,7 @@ import { Product, ProductWithUI } from '../../../types';
 import { useProductForm } from '../../hooks/useProductForm';
 import { ProductForm } from './ProductForm';
 import { ProductTable } from './ProductTable';
+import { Button } from '../../components/ui/Button';
 
 interface ProductManagementProps {
   products: ProductWithUI[];
@@ -34,16 +35,15 @@ export const ProductManagement = ({
       <div className="p-6 border-b border-gray-200">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-semibold">상품 목록</h2>
-          <button
+          <Button
             onClick={() => {
               setEditingProduct("new");
               setProductForm({ name: "", price: 0, stock: 0, description: "", discounts: [] });
               setShowProductForm(true);
             }}
-            className="px-4 py-2 bg-gray-900 text-white text-sm rounded-md hover:bg-gray-800"
           >
             새 상품 추가
-          </button>
+          </Button>
         </div>
       </div>
 

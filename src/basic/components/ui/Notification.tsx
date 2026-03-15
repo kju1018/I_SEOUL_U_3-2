@@ -1,4 +1,5 @@
 import { Notification as NotificationType } from "../../../types";
+import { Button } from "./Button";
 
 interface NotificationProps {
   notifications: NotificationType[];
@@ -18,15 +19,17 @@ export const Notification = ({ notifications, onClose }: NotificationProps) => {
           }`}
         >
           <span className="mr-2">{notif.message}</span>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => onClose(notif.id)}
-            className="text-white hover:text-gray-200"
+            className="text-white hover:bg-white/20 hover:text-white"
             aria-label="Close notification"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-          </button>
+          </Button>
         </div>
       ))}
     </div>

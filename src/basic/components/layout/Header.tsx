@@ -1,5 +1,7 @@
 
 
+import { Button } from "../ui/Button";
+
 interface HeaderProps {
   isAdmin: boolean;
   setIsAdmin: (isAdmin: boolean) => void;
@@ -36,14 +38,13 @@ export const Header = ({
             )}
           </div>
           <nav className="flex items-center space-x-4">
-            <button
+            <Button
+              variant={isAdmin ? "primary" : "ghost"}
+              size="sm"
               onClick={() => setIsAdmin(!isAdmin)}
-              className={`px-3 py-1.5 text-sm rounded transition-colors ${
-                isAdmin ? "bg-gray-800 text-white" : "text-gray-600 hover:text-gray-900"
-              }`}
             >
               {isAdmin ? "쇼핑몰로 돌아가기" : "관리자 페이지로"}
-            </button>
+            </Button>
             {!isAdmin && (
               <div className="relative">
                 <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">

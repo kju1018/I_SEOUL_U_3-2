@@ -1,5 +1,6 @@
 import { ProductWithUI } from '../../../types';
 import { formatPrice } from '../../utils/formatters';
+import { Button } from '../../components/ui/Button';
 
 interface ProductRowProps {
   product: ProductWithUI;
@@ -33,18 +34,20 @@ export const ProductRow = ({ product, onEdit, onDelete }: ProductRowProps) => {
         {product.description || "-"}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button
+        <Button
+          variant="link"
           onClick={() => onEdit(product)}
-          className="text-indigo-600 hover:text-indigo-900 mr-3"
+          className="mr-3"
         >
           수정
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="link"
           onClick={() => onDelete(product.id)}
           className="text-red-600 hover:text-red-900"
         >
           삭제
-        </button>
+        </Button>
       </td>
     </tr>
   );
