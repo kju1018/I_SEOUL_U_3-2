@@ -3,6 +3,7 @@ import { Coupon, CartItem } from "../../types";
 import { initialCoupons } from "../constants";
 import { calculateCartTotal } from "../models/carts";
 import { useUIStore } from "./useUIStore";
+import { addCouponToList, findCouponByCode, removeCouponFromList } from "../models/coupon";
 
 interface CouponState {
   coupons: Coupon[];
@@ -33,14 +34,14 @@ export const useCouponStore = create<CouponState>((set, get) => ({
   addCoupon: (newCoupon) => {
     const { coupons } = get();
     const { addNotification } = useUIStore.getState();
-    const existingCoupon = coupons.find((c) => c.code === newCoupon.code);
+    const existingCoupon = findCouponByCode(coupons, newCoupon.code);
 
     if (existingCoupon) {
       addNotification("이미 존재하는 쿠폰 코드입니다.", "error");
       return;
     }
 
-    const updatedCoupons = [...coupons, newCoupon];
+    const updatedCoupons = addCouponToList(coupons, newCoupon);
     set({ coupons: updatedCoupons });
     localStorage.setItem("coupons", JSON.stringify(updatedCoupons));
     addNotification("쿠폰이 추가되었습니다.", "success");
@@ -49,7 +50,7 @@ export const useCouponStore = create<CouponState>((set, get) => ({
   deleteCoupon: (couponCode) => {
     const { coupons, selectedCoupon } = get();
     const { addNotification } = useUIStore.getState();
-    const updatedCoupons = coupons.filter((c) => c.code !== couponCode);
+    const updatedCoupons = removeCouponFromList(coupons, couponCode);
 
     set({ coupons: updatedCoupons });
     localStorage.setItem("coupons", JSON.stringify(updatedCoupons));

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { CartItem, Coupon } from "../../types";
 import { initialCoupons } from "../constants";
 import { calculateCartTotal } from "../models/carts";
+import { addCouponToList, findCouponByCode, removeCouponFromList } from "../models/coupon";
 
 export const useCoupon = (addNotification: (message: string, type: "error" | "success" | "warning") => void) => {
   const [coupons, setCoupons] = useState<Coupon[]>(() => {
@@ -37,17 +38,17 @@ export const useCoupon = (addNotification: (message: string, type: "error" | "su
   );
 
   const addCoupon = useCallback((newCoupon: Coupon) => {
-    const existingCoupon = coupons.find(c => c.code === newCoupon.code);
+    const existingCoupon = findCouponByCode(coupons, newCoupon.code);
     if (existingCoupon) {
       addNotification('이미 존재하는 쿠폰 코드입니다.', 'error');
       return;
     }
-    setCoupons(prev => [...prev, newCoupon]);
+    setCoupons(prev => addCouponToList(prev, newCoupon));
     addNotification('쿠폰이 추가되었습니다.', 'success');
   }, [coupons, addNotification]);
 
   const deleteCoupon = useCallback((couponCode: string) => {
-    setCoupons(prev => prev.filter(c => c.code !== couponCode));
+    setCoupons(prev => removeCouponFromList(prev, couponCode));
     if (selectedCoupon?.code === couponCode) {
       setSelectedCoupon(null);
     }
